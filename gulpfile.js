@@ -8,7 +8,9 @@ var gulp = require('gulp'),
     cache = require('gulp-cache'),
     minifycss = require('gulp-minify-css'),
     sass = require('gulp-sass'),
-    browserSync = require('browser-sync');
+    browserSync = require('browser-sync'),
+    tape = require('gulp-tape'),
+    tapColorize = require('tap-colorize');
 
 gulp.task('browser-sync', function() {
   browserSync({
@@ -62,6 +64,13 @@ gulp.task('scripts', function(){
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts/'))
     .pipe(browserSync.reload({stream:true}))
+});
+
+gulp.task('test', function() {
+  return gulp.src('src/spec/*.spec.js')
+    .pipe(tape({
+      reporter: tapColorize()
+    }));
 });
 
 gulp.task('default', ['browser-sync'], function(){

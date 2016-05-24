@@ -2,9 +2,22 @@
     <head>
         <title>Hello</title>
         <link href="style/main.min.css" rel="stylesheet" />
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
     </head>
     <body>
         Test
     </body>
     <script src="scripts/app.min.js"></script>
+    <script type="text/javascript">
+  WebFontConfig = {
+    google: { families: [ 'Roboto:400,300,700:latin' ] }
+  };
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })(); </script>
 </html>

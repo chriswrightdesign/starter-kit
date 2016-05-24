@@ -10,7 +10,9 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     browserSync = require('browser-sync'),
     tape = require('gulp-tape'),
-    tapColorize = require('tap-colorize');
+    tapColorize = require('tap-colorize'),
+    path = require('path'),
+    swPrecache = require('sw-precache');
 
 gulp.task('browser-sync', function() {
   browserSync({
@@ -73,20 +75,39 @@ gulp.task('test', function() {
     }));
 });
 
-gulp.task('generate-service-worker', function(callback) {
-  var path = require('path');
-  var swPrecache = require('sw-precache');
+gulp.task('generate-sw', function(callback) {
+
   var rootDir = 'dist';
 
   swPrecache.write(path.join(rootDir, 'service-worker.js'), {
-    staticFileGlobs: [rootDir + '/**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff}'],
-    stripPrefix: rootDir
+    staticFileGlobs: [rootDir + '/**/*.{html,js,css,png,jpg,gif,svg,eot,ttf,woff}'],
+    stripPrefix: rootDir,
+    runtimeCaching: [{
+        urlPattern: /^https:\/\/ajax\.googleapis\.com\/ajax\/libs\/webfont\/1\/webfont.js/,
+        handler: 'cacheFirst'
+    },
+    {
+        urlPattern: /^https:\/\/fonts\.gstatic\.com\/s/,
+        handler: 'cacheFirst'
+    },
+    {
+        urlPattern: /^http:\/\/fonts\.gstatic\.com\/s/,
+        handler: 'cacheFirst'
+    },
+    {
+        urlPattern: /^https:\/\/fonts\.googleapis\.com\/css\?.+/,
+        handler: 'cacheFirst'
+    },
+    {
+        urlPattern: /^http:\/\/fonts\.googleapis\.com\/css\?.+/,
+        handler: 'cacheFirst'
+    }]
   }, callback);
 });
 
 
 gulp.task('default', ['browser-sync'], function(){
-  gulp.watch("src/sass/**/*.scss", ['styles']);
-  gulp.watch("src/js/**/*.js", ['scripts']);
+  gulp.watch("src/sass/**/*.scss", ['styles', 'generate-service-worker']);
+  gulp.watch("src/js/**/*.js", ['scripts', 'generate-service-worker']);
   gulp.watch("src/**/*.html", ['html']);
 });

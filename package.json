@@ -11,7 +11,7 @@
   "devDependencies": {
     "babel-eslint": "^6.0.3",
     "browser-sync": "2.6.5",
-    "eslint": "^2.8.0",
+    "eslint": "^6.5.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "2.1.0",
     "gulp-babel": "5.1.0",
